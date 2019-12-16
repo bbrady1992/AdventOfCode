@@ -46,19 +46,11 @@ void executeOpcode2(std::vector<int64_t>& Intcode, int opcodeIndex) {
   Intcode[productIndex] = product;
 }
 
-void executeOpcode99(const std::vector<int64_t>& Intcode) {
-  std::cout << "Value at position 0: " << Intcode[0] << "\n";
-  exit(0);
+int64_t executeOpcode99(const std::vector<int64_t>& Intcode) {
+  return Intcode[0];
 }
 
-void printVector(const std::vector<int64_t>& Intcode) {
-  for (const auto& i: Intcode) {
-    std::cout << i << " ";
-  }
-  std::cout << "\n";
-}
-
-void executeIntcodeProgram(std::vector<int64_t>& Intcode) {
+int64_t executeIntcodeProgram(std::vector<int64_t>& Intcode) {
   int currentOpcodeIndex = 0;
   while (true) {
     int opcode = Intcode[currentOpcodeIndex];
@@ -70,12 +62,14 @@ void executeIntcodeProgram(std::vector<int64_t>& Intcode) {
         executeOpcode2(Intcode, currentOpcodeIndex);
         break;
       case 99:
-        executeOpcode99(Intcode);
+        return executeOpcode99(Intcode);
         break;
     }
     currentOpcodeIndex += 4;
   }
 }
+
+constexpr int64_t DESIRED_OUTPUT = 19690720;
 
 int main(int argc, char** argv) {
   if (argc != 2) {
@@ -84,7 +78,16 @@ int main(int argc, char** argv) {
   }
 
   auto Intcode = loadIntcode(argv[1]);
-  Intcode[1] = 1969;
-  Intcode[2] = 720;
-  executeIntcodeProgram(Intcode);
+  for (int i = 0; i < 100; ++i) {
+    for (int j = 0; j < 100; ++j) {
+      auto intcode = Intcode;
+      intcode[1] = i;
+      intcode[2] = j;
+      if (executeIntcodeProgram(intcode) == DESIRED_OUTPUT) {
+        std::cout << "Noun: " << i << "\n"
+                  << "Verb: " << j << "\n";
+        exit(0);
+      }
+    }
+  }
 }
