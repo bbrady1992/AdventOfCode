@@ -7,7 +7,6 @@ public class TreeMap {
     private final String filename;
     private ArrayList<String> treeRows = new ArrayList<>();
 
-    private final char empty = '.';
     private final char tree = '#';
     private int rowLength;
 
@@ -15,8 +14,15 @@ public class TreeMap {
         this.filename = filename;
     }
 
-    public void Read() throws FileNotFoundException {
-        FileReader f = new FileReader(filename);
+    public void Read() {
+        FileReader f = null;
+        try {
+            f = new FileReader(filename);
+        } catch (FileNotFoundException e) {
+            System.out.printf("Could not open file '%s'\n", filename);
+            e.printStackTrace();
+        }
+
         Scanner in = new Scanner(f);
         while (in.hasNextLine()) {
             treeRows.add(in.nextLine());
