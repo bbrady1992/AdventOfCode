@@ -3,15 +3,13 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Rule {
-    int lowerBound;
-    int upperBound;
-    char character;
+public class Part1Rule implements RuleInterface {
 
-    public Rule(String ruleString) {
+    public Part1Rule(String ruleString) {
         SetRule(ruleString);
     }
 
+    @Override
     public void SetRule(String ruleString) {
         Pattern pattern = Pattern.compile("([0-9]+)-([0-9]+) ([A-Za-z])");
         Matcher m = pattern.matcher(ruleString);
@@ -25,12 +23,13 @@ public class Rule {
         }
     }
 
-    public boolean PassesRule(String input) {
+    @Override
+    public boolean Passes(String input) {
         long count = input.chars().filter(ch -> ch == character).count();
         return count >= lowerBound && count <= upperBound;
     }
 
-    public void PrintRule() {
-        System.out.println(lowerBound + "-" + upperBound + " " + character);
-    }
+    private int lowerBound;
+    private int upperBound;
+    private char character;
 }
