@@ -13,10 +13,7 @@ public class BatchParser {
         List<String> batches = ParseBatches();
         List<Passport> passports = new ArrayList<>();
         for (var batch: batches) {
-            //System.out.println("========== Batch Start ==========");
-            //System.out.println(batch);
             passports.add(new Passport(batch.trim()));
-            //System.out.println("=================================");
         }
         return passports;
     }

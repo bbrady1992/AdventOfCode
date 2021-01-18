@@ -5,10 +5,7 @@ public class Main {
         String input = "input.txt";
         var parser = new BatchParser(input);
         List<Passport> passports = parser.Read();
-        var wrapper = new Object(){int validPassports = 0;};
-        passports.forEach((p) -> {
-            wrapper.validPassports += (p.IsValid() ? 1 : 0);
-        });
-        System.out.println("Valid passports: " + wrapper.validPassports);
+        long validPassports = passports.stream().filter((p) -> p.IsValid()).count();
+        System.out.println("Valid passports: " + validPassports);
     }
 }
