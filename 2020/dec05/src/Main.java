@@ -17,14 +17,19 @@ public class Main {
         }
 
         Set<Integer> hashes = new HashSet<>();
-        new Scanner(f).useDelimiter("\n").forEachRemaining((partitionString) -> {
-            int row = BinaryPartition(0, 'F', 127, 'B', partitionString.substring(0, 7));
-            int col = BinaryPartition(0, 'L', 7, 'R', partitionString.substring(7));
-            hashes.add(Hash(row, col));
-        });
-
         var max = new Object(){int hash = 0;};
-        hashes.forEach((h) -> max.hash = Math.max(max.hash, h));
+        new Scanner(f).useDelimiter("\n").forEachRemaining((partitionString) -> {
+            String binaryString = partitionString.trim()
+                    .replace('F', '0')
+                    .replace('B', '1')
+                    .replace('L', '0')
+                    .replace('R', '1');
+            Integer row = Integer.parseInt(binaryString.substring(0, 7), 2);
+            Integer col = Integer.parseInt(binaryString.substring(7), 2);
+            Integer seatID = Hash(row, col);
+            max.hash = Math.max(max.hash, seatID);
+            hashes.add(seatID);
+        });
         System.out.printf("Checked %d hashes. Maximum is %d\n", hashes.size(), max.hash);
 
         for (int r = 0; r < 128; ++r) {
@@ -37,17 +42,6 @@ public class Main {
                 }
             }
         }
-    }
-
-    static int BinaryPartition(int lowerBound, final char lowerBoundChar, int upperBound, final char upperBoundChar, String partitionString) {
-        for (int i = 0; i < partitionString.length(); ++i) {
-            if (partitionString.charAt(i) == lowerBoundChar) {
-                upperBound = lowerBound + Math.floorDiv(upperBound - lowerBound, 2);
-            } else if (partitionString.charAt(i) == upperBoundChar) {
-                lowerBound = lowerBound + ((upperBound - lowerBound + 1) / 2);
-            }
-        }
-        return lowerBound;
     }
 
     static Integer Hash(int row, int column) {
