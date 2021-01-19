@@ -1,8 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,7 +16,7 @@ public class Main {
             return;
         }
 
-        List<Integer> hashes = new ArrayList<>();
+        Set<Integer> hashes = new HashSet<>();
         new Scanner(f).useDelimiter("\n").forEachRemaining((partitionString) -> {
             int row = BinaryPartition(0, 'F', 127, 'B', partitionString.substring(0, 7));
             int col = BinaryPartition(0, 'L', 7, 'R', partitionString.substring(7));
@@ -28,6 +26,17 @@ public class Main {
         var max = new Object(){int hash = 0;};
         hashes.forEach((h) -> max.hash = Math.max(max.hash, h));
         System.out.printf("Checked %d hashes. Maximum is %d\n", hashes.size(), max.hash);
+
+        for (int r = 0; r < 128; ++r) {
+            for (int c = 0; c < 8; ++c) {
+                Integer h = Hash(r, c);
+                if (!hashes.contains(h) && hashes.contains(h - 1) && hashes.contains(h + 1)) {
+                    System.out.println("Found seat ID - " + h);
+
+                    return;
+                }
+            }
+        }
     }
 
     static int BinaryPartition(int lowerBound, final char lowerBoundChar, int upperBound, final char upperBoundChar, String partitionString) {
