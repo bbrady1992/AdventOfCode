@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Main {
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -8,10 +5,13 @@ public class Main {
             return;
         }
 
-        var group = new Object(){int sum = 0;};
+        var group = new Object(){ long totalAnswered = 0L; long allYeses = 0L; };
         new InputParser().ParseGroups(args[0]).forEach((g) -> {
-            group.sum += g.GroupSum();
+            g.CollateAnswers();
+            group.totalAnswered += g.TotalQuestionsAnswered();
+            group.allYeses += g.GroupYeses();
         });
-        System.out.println("Sum = " + group.sum);
+        System.out.println("Sum = " + group.totalAnswered);
+        System.out.println("All yeses = " + group.allYeses);
     }
 }

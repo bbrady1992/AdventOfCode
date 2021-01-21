@@ -24,6 +24,7 @@ public class InputParser {
                 sb.setLength(0);
             }
             sb.append(nextLine);
+            sb.append("\n");
         }
         if (sb.length() != 0) {
             groups.add(new Group(sb.toString()));
