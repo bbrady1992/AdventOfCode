@@ -18,37 +18,12 @@ public class Main {
             e.printStackTrace();
         }
 
-        List<String> ops = new ArrayList<>();
+        var ops = new ArrayList<String>();
         new Scanner(f).useDelimiter("\n").forEachRemaining((s) -> ops.add(s));
 
-        Integer accumulator = 0;
-        int currentOpIndex = 0;
+        var opCodeRunner = new OpCodeRunner(ops);
+        opCodeRunner.Run();
 
-        String currentOp = ops.get(currentOpIndex);
-        while (currentOp != null) {
-            String[] opInstruction = currentOp.trim().split(" ");
-            String op = opInstruction[0];
-            Integer opValue = Integer.parseInt(opInstruction[1]);
-
-            ops.set(currentOpIndex, null);
-
-            switch (op) {
-                case "acc":
-                    accumulator += opValue;
-                    currentOpIndex += 1;
-                    break;
-                case "jmp":
-                    currentOpIndex += opValue;
-                    break;
-                case "nop":
-                    currentOpIndex += 1;
-                    break;
-            }
-
-            currentOp = ops.get(currentOpIndex);
-        }
-
-
-        System.out.println("Accumulator = " + accumulator);
+        System.out.println("Accumulator = " + opCodeRunner.Accumulator());
     }
 }
