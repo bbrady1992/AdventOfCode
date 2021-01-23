@@ -23,17 +23,10 @@ public class OpCodeRunner {
         }
     }
 
-    /**
-     * Constructs a new OpCodeRunner instance using a list of op codes to execute
-     * @param opCodes List of op codes
-     */
     public OpCodeRunner(ArrayList<String> opCodes) {
         this.opCodes = opCodes;
     }
 
-    /**
-     * @return True if code runs without infinite loops
-     */
     public OpCodeResult Run() {
         int currentOpIndex = 0;
         OpCodeResult result = new OpCodeResult();
