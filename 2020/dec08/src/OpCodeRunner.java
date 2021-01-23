@@ -1,12 +1,13 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class OpCodeRunner {
     /**
-     * Constructs a new OpCodeRunner instance by cloning a list of op codes
-     * @param opCodes List of op codes. Reference is cloned
+     * Constructs a new OpCodeRunner instance using a list of op codes to execute
+     * @param opCodes List of op codes
      */
-    OpCodeRunner(ArrayList<String> opCodes) {
-        this.opCodes = (ArrayList)opCodes.clone();
+    public OpCodeRunner(ArrayList<String> opCodes) {
+        this.opCodes = opCodes;
     }
 
     /**
@@ -23,6 +24,7 @@ public class OpCodeRunner {
             Integer opValue = Integer.parseInt(opInstruction[1]);
 
             opCodes.set(currentOpIndex, null);
+            history.add(currentOpIndex);
             switch (op) {
                 case "acc":
                     accumulator += opValue;
@@ -35,7 +37,9 @@ public class OpCodeRunner {
                     ++currentOpIndex;
                     break;
             }
-            currentOp = opCodes.get(currentOpIndex);
+            if (currentOpIndex < opCodes.size()) {
+                currentOp = opCodes.get(currentOpIndex);
+            }
         }
         return currentOpIndex == opCodes.size();
     }
@@ -44,6 +48,11 @@ public class OpCodeRunner {
         return accumulator;
     }
 
+    public List<Integer> History() {
+        return history;
+    }
+
     private ArrayList<String> opCodes = null;
     private Integer accumulator;
+    private ArrayList<Integer> history = new ArrayList<>();
 }
