@@ -21,8 +21,8 @@ public class Main {
         new Scanner(f).useDelimiter("\n").forEachRemaining((s) -> ops.add(s));
 
         var opCodeRunner = new OpCodeRunner((ArrayList)ops.clone());
-        opCodeRunner.Run();
-        System.out.println("Accumulator = " + opCodeRunner.Accumulator());
+        OpCodeRunner.OpCodeResult part1Result = opCodeRunner.Run();
+        System.out.println("Accumulator = " + part1Result.Accumulator());
 
         var failedHistory = opCodeRunner.History();
         for (var i: failedHistory) {
@@ -31,8 +31,9 @@ public class Main {
                 String modifiedOpInstruction = FlipOpInstruction(modifiedOpCode.get(i));
                 modifiedOpCode.set(i, modifiedOpInstruction);
                 var testRunner = new OpCodeRunner(modifiedOpCode);
-                if (testRunner.Run()) {
-                    System.out.println("Fixed op code. Accumulator = " + testRunner.Accumulator());
+                OpCodeRunner.OpCodeResult result = testRunner.Run();
+                if (result.Finished()) {
+                    System.out.println("Fixed op code. Accumulator = " + result.Accumulator());
                     break;
                 }
             }

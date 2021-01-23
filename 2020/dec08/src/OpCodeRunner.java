@@ -2,6 +2,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpCodeRunner {
+    public class OpCodeResult {
+        private Boolean finished = false;
+        private Integer accumulator = 0;
+
+        public Boolean Finished() {
+            return finished;
+        }
+
+        public void SetFinished(Boolean finished) {
+            this.finished = finished;
+        }
+
+        public Integer Accumulator() {
+            return accumulator;
+        }
+
+        public void Accumulate(Integer value) {
+            accumulator += value;
+        }
+    }
+
     /**
      * Constructs a new OpCodeRunner instance using a list of op codes to execute
      * @param opCodes List of op codes
@@ -13,9 +34,9 @@ public class OpCodeRunner {
     /**
      * @return True if code runs without infinite loops
      */
-    public Boolean Run() {
+    public OpCodeResult Run() {
         int currentOpIndex = 0;
-        accumulator = 0;
+        OpCodeResult result = new OpCodeResult();
 
         String currentOp = opCodes.get(currentOpIndex);
         while (currentOp != null && currentOpIndex != opCodes.size()) {
@@ -27,7 +48,7 @@ public class OpCodeRunner {
             history.add(currentOpIndex);
             switch (op) {
                 case "acc":
-                    accumulator += opValue;
+                    result.Accumulate(opValue);
                     ++currentOpIndex;
                     break;
                 case "jmp":
@@ -41,11 +62,8 @@ public class OpCodeRunner {
                 currentOp = opCodes.get(currentOpIndex);
             }
         }
-        return currentOpIndex == opCodes.size();
-    }
-
-    public Integer Accumulator() {
-        return accumulator;
+        result.SetFinished(currentOpIndex == opCodes.size());
+        return result;
     }
 
     public List<Integer> History() {
@@ -53,6 +71,5 @@ public class OpCodeRunner {
     }
 
     private ArrayList<String> opCodes = null;
-    private Integer accumulator;
     private ArrayList<Integer> history = new ArrayList<>();
 }
